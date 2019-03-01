@@ -5,17 +5,24 @@ steps:
   - id: snyk-test-app
     cmd: >
       {{.Run.Registry}}/helloworld:{{.Run.ID}}
-      sh -c "curl -sSL https://storage.googleapis.com/snyk-demo/snyk.sh | sh -s
-      test --severity-threshold=medium || echo 'Continuing build despite vulnerabilities found...'"
+      sh -c "cat /src/snyk.sh | sh -s test --severity-threshold=low"
     entryPoint: 
     env: ["PROJECT_PATH=/src", "SNYK_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"]
 
-  - id: snyk-test-os
+  - id: snyk-test-docker
     cmd: >
       {{.Run.Registry}}/helloworld:{{.Run.ID}}
-      sh -c "curl -sSL https://storage.googleapis.com/snyk-demo/snyk.sh | sh -s 
-      test --docker - --file=/workspace/Dockerfile --severity-threshold=high"
+      sh -c "cat /src/snyk.sh | sh -s test --docker - --file=/workspace/Dockerfile --severity-threshold=low"
     entryPoint: 
     env: ["PROJECT_PATH=/src", "SNYK_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"]
 
   - push: ["{{.Run.Registry}}/helloworld:{{.Run.ID}}"]
+
+
+
+
+
+
+
+
+
